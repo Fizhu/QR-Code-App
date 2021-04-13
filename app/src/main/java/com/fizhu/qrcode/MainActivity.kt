@@ -1,7 +1,8 @@
 package com.fizhu.qrcode
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.fizhu.qrcode.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -16,6 +17,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onInit() {
-
+        binding.btnScan.setOnClickListener { startActivity(Intent(this, ScanActivity::class.java)) }
+        binding.btnGenerate.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    GenerateActivity::class.java
+                )
+            )
+        }
     }
 }
