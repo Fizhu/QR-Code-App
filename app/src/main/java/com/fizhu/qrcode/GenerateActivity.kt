@@ -1,6 +1,7 @@
 package com.fizhu.qrcode
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
+import com.google.zxing.qrcode.QRCodeWriter
 import java.util.*
 
 
@@ -36,7 +38,7 @@ class GenerateActivity : AppCompatActivity() {
         if (text.isEmpty() || text == "") {
             Toast.makeText(this, "Text cannot be empty", Toast.LENGTH_SHORT).show()
         } else {
-            setImage(encodeAsBitmap(text))
+            setImage(stringToQrCode(text))
         }
     }
 
@@ -89,6 +91,20 @@ class GenerateActivity : AppCompatActivity() {
             }
         }
         return null
+    }
+
+    private fun stringToQrCode(string: String): Bitmap? {
+        val writer = QRCodeWriter()
+        val bitMatrix = writer.encode(string, BarcodeFormat.QR_CODE, 400, 400)
+        val width = bitMatrix.width
+        val height = bitMatrix.height
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+        for (x in 0 until width) {
+            for (y in 0 until height) {
+                bitmap.setPixel(x, y, if (bitMatrix.get(x, y)) Color.BLACK else Color.WHITE)
+            }
+        }
+        return bitmap
     }
 
     companion object {
